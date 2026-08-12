@@ -1,0 +1,37 @@
+name: generator-ci
+
+# Reusable CI for every Packkit generator repo (packkit-core, create-packkit-js,
+# create-packkit-py, …). Consumers call it from their own `ci.yml`:
+#
+#   jobs:
+#     ci:
+#       uses: PackkitJS/packkit-actions/.github/workflows/generator-ci.yml@v1
+#
+# It runs ONE language-agnostic entrypoint — `npm run check` — so this YAML never
+# encodes what "check" means for a given generator (that lives in each repo's
+# package.json). Pin `@v1`, never `@main`.
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node version to run the check under.
+        type: string
+        default: '24'
+      runs-on:
+        description: Runner image.
+        type: string
+        default: ubuntu-latest
+
+jobs:
+  check:
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+      - run: npm ci
+      # The single standard entrypoint. Each generator's package.json defines
+      # `check` (typically typecheck + lint + test + build + package validation).
+      - run: npm run check
