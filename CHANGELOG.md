@@ -8,6 +8,14 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-08-12
+
+### Fixed
+
+- `generator-integration.yml`: `astral-sh/setup-uv` is SHA-pinned to `v10.0.0`
+  (`ae62891`). `@v10` didn't resolve — setup-uv publishes no moving major tag — and
+  SHA-pinning a third-party action in shared CI is the safer choice regardless.
+
 ## [1.1.0] - 2026-08-12
 
 ### Added
@@ -36,6 +44,7 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.1
 [1.1.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.0
 [1.0.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.0.0

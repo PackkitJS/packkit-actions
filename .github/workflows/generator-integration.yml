@@ -45,7 +45,8 @@ jobs:
           cache: npm
       - run: npm ci
       - if: ${{ inputs.setup-uv }}
-        uses: astral-sh/setup-uv@v10
+        # Third-party action → SHA-pinned (setup-uv publishes no moving major tag).
+        uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ inputs.uv-version }}
       # The single standard entrypoint. Each generator's `test:integration` scaffolds
