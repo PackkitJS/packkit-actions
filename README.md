@@ -30,6 +30,7 @@ Phase 4.
 | `generator-ci.yml` | `push` / `pull_request` | `npm ci` → `npm run check` |
 | `generator-integration.yml` | `push` / `pull_request` / `schedule` | provisions runtimes (Node always; uv opt-in) → `npm run test:integration` |
 | `security.yml` | `pull_request` / `schedule` | `npm ci` → `npm audit --audit-level=<high>` |
+| `dependency-freshness.yml` | `schedule` / `workflow_dispatch` | `npm run check:freshness` → open/update/close a tracking issue |
 
 Each invokes a single standard npm script, so the shared YAML stays
 language-agnostic:
@@ -38,9 +39,7 @@ language-agnostic:
 | --- | --- |
 | `check` | typecheck + lint + test + build + package validation |
 | `test:integration` | scaffold a project with the real CLI and exercise its own tooling |
-
-_`dependency-freshness` (template-dependency currency) lands in a later slice, once
-there's a generator freshness check to generalize._
+| `check:freshness` | compare the deps the generator EMITS to the latest published; exit non-zero if a major behind |
 
 ## Usage
 
@@ -83,6 +82,21 @@ on:
 jobs:
   security:
     uses: PackkitJS/packkit-actions/.github/workflows/security.yml@v1
+```
+
+```yaml
+# .github/workflows/freshness.yml in a generator repo
+name: Dependency freshness
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+jobs:
+  freshness:
+    permissions: # the caller must grant issues: write
+      contents: read
+      issues: write
+    uses: PackkitJS/packkit-actions/.github/workflows/dependency-freshness.yml@v1
 ```
 
 ## Versioning

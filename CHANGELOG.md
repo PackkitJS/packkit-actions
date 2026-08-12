@@ -8,6 +8,17 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-08-12
+
+### Added
+
+- `dependency-freshness.yml` — reusable "Dependabot for the templates". Runs the
+  repo's standard `check:freshness` script (which compares the deps a generator
+  emits into scaffolded projects against the latest published) and opens/updates a
+  single tracking issue when something is a major behind, closing it once current.
+  Inputs: `node-version`, `runs-on`, `issue-title`, `issue-label`. The calling job
+  must grant `issues: write`.
+
 ## [1.1.2] - 2026-08-12
 
 ### Fixed
@@ -53,7 +64,8 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.2.0
 [1.1.2]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.2
 [1.1.1]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.1
 [1.1.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.0
