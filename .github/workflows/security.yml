@@ -1,0 +1,40 @@
+name: security
+
+# Reusable dependency-audit gate for any Packkit npm repo. Fails on advisories at
+# or above `audit-level` (default: high). Call it on pull_request and on a weekly
+# schedule so a newly-disclosed advisory surfaces even without a code change:
+#
+#   on:
+#     pull_request:
+#     schedule:
+#       - cron: '0 6 * * 1'   # Mondays
+#   jobs:
+#     security:
+#       uses: PackkitJS/packkit-actions/.github/workflows/security.yml@v1
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node version.
+        type: string
+        default: '24'
+      audit-level:
+        description: Minimum severity that fails the job (low|moderate|high|critical).
+        type: string
+        default: high
+      runs-on:
+        description: Runner image.
+        type: string
+        default: ubuntu-latest
+
+jobs:
+  audit:
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=${{ inputs.audit-level }}

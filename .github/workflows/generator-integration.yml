@@ -1,0 +1,53 @@
+name: generator-integration
+
+# Reusable end-to-end integration for a generator repo: it provisions the runtimes
+# a generated project needs, then runs the standard `npm run test:integration`
+# entrypoint. As with generator-ci, the shared YAML provisions runtimes but never
+# encodes what the test does — that lives in each repo's `test:integration` script
+# (e.g. create-packkit-py scaffolds a project and runs uv/pytest/ruff/mypy on it).
+#
+#   jobs:
+#     integration:
+#       uses: PackkitJS/packkit-actions/.github/workflows/generator-integration.yml@v1
+#       with:
+#         setup-uv: true          # Python generators
+#
+# Node is always provisioned (these generators are npm-scripted). Non-Node runtimes
+# are opt-in flags so one workflow serves JS, Python, and future language generators.
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node version.
+        type: string
+        default: '24'
+      runs-on:
+        description: Runner image.
+        type: string
+        default: ubuntu-latest
+      setup-uv:
+        description: Install uv (Astral) — for Python generators. uv manages its own Python.
+        type: boolean
+        default: false
+      uv-version:
+        description: uv version to install when setup-uv is true.
+        type: string
+        default: latest
+
+jobs:
+  integration:
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+      - run: npm ci
+      - if: ${{ inputs.setup-uv }}
+        uses: astral-sh/setup-uv@v10
+        with:
+          version: ${{ inputs.uv-version }}
+      # The single standard entrypoint. Each generator's `test:integration` scaffolds
+      # a project with its real CLI and exercises the generated project's own tooling.
+      - run: npm run test:integration
