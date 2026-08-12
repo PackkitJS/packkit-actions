@@ -49,6 +49,9 @@ jobs:
         uses: astral-sh/setup-uv@ae62891fec2bb8e7d6c99fc78c9fec3a63790f8d # v10.0.0
         with:
           version: ${{ inputs.uv-version }}
+          # A generator repo has no root pyproject to cache against — each integration
+          # run scaffolds fresh throwaway projects — so caching only warns. Disable it.
+          enable-cache: false
       # The single standard entrypoint. Each generator's `test:integration` scaffolds
       # a project with its real CLI and exercises the generated project's own tooling.
       - run: npm run test:integration

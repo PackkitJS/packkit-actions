@@ -8,6 +8,15 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-08-12
+
+### Fixed
+
+- `generator-integration.yml`: pass `enable-cache: false` to setup-uv. A generator
+  repo has no root `pyproject.toml`/lockfile to key a cache on (each run scaffolds
+  throwaway projects), so caching only emitted a "cache will never get invalidated"
+  warning on every run.
+
 ## [1.1.1] - 2026-08-12
 
 ### Fixed
@@ -44,7 +53,8 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.2
 [1.1.1]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.1
 [1.1.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.0
 [1.0.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.0.0
