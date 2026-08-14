@@ -11,9 +11,10 @@ name: generator-integration
 #       uses: PackkitJS/packkit-actions/.github/workflows/generator-integration.yml@v1
 #       with:
 #         setup-uv: true          # Python generators
+#         setup-go: true          # Go generators
 #
 # Node is always provisioned (these generators are npm-scripted). Non-Node runtimes
-# are opt-in flags so one workflow serves JS, Python, and future language generators.
+# are opt-in flags so one workflow serves JS, Python, Go, and future language generators.
 on:
   workflow_call:
     inputs:
@@ -33,6 +34,14 @@ on:
         description: uv version to install when setup-uv is true.
         type: string
         default: latest
+      setup-go:
+        description: Install Go — for Go generators. Provides `go`, `gofmt`, `go vet`.
+        type: boolean
+        default: false
+      go-version:
+        description: Go version to install when setup-go is true.
+        type: string
+        default: stable
 
 jobs:
   integration:
@@ -52,6 +61,13 @@ jobs:
           # A generator repo has no root pyproject to cache against — each integration
           # run scaffolds fresh throwaway projects — so caching only warns. Disable it.
           enable-cache: false
+      - if: ${{ inputs.setup-go }}
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ inputs.go-version }}
+          # Same reasoning as uv: the generator repo has no go.mod of its own; each run
+          # scaffolds throwaway Go projects, so the module cache has nothing stable to key on.
+          cache: false
       # The single standard entrypoint. Each generator's `test:integration` scaffolds
       # a project with its real CLI and exercises the generated project's own tooling.
       - run: npm run test:integration
