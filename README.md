@@ -1,6 +1,6 @@
 # packkit-actions
 
-Reusable GitHub Actions workflows shared across the [PackkitJS](https://github.com/PackkitJS)
+Reusable GitHub Actions workflows shared across the [PackkitLabs](https://github.com/PackkitLabs)
 ecosystem — the single place CI/release logic lives, so `packkit-core`, the
 generators (`create-packkit-js`, `create-packkit-py`, …), and downstream packages
 don't each carry a copy.
@@ -52,7 +52,7 @@ on:
   pull_request:
 jobs:
   ci:
-    uses: PackkitJS/packkit-actions/.github/workflows/generator-ci.yml@v1
+    uses: PackkitLabs/packkit-actions/.github/workflows/generator-ci.yml@v1
     # optional overrides:
     # with:
     #   node-version: '22'
@@ -67,7 +67,7 @@ on:
   pull_request:
 jobs:
   integration:
-    uses: PackkitJS/packkit-actions/.github/workflows/generator-integration.yml@v1
+    uses: PackkitLabs/packkit-actions/.github/workflows/generator-integration.yml@v1
     with:
       setup-uv: true
 ```
@@ -81,7 +81,7 @@ on:
     - cron: '0 6 * * 1'
 jobs:
   security:
-    uses: PackkitJS/packkit-actions/.github/workflows/security.yml@v1
+    uses: PackkitLabs/packkit-actions/.github/workflows/security.yml@v1
 ```
 
 ```yaml
@@ -96,7 +96,7 @@ jobs:
     permissions: # the caller must grant issues: write
       contents: read
       issues: write
-    uses: PackkitJS/packkit-actions/.github/workflows/dependency-freshness.yml@v1
+    uses: PackkitLabs/packkit-actions/.github/workflows/dependency-freshness.yml@v1
 ```
 
 ## Versioning

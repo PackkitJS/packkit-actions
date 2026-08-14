@@ -8,7 +8,7 @@ name: generator-integration
 #
 #   jobs:
 #     integration:
-#       uses: PackkitJS/packkit-actions/.github/workflows/generator-integration.yml@v1
+#       uses: PackkitLabs/packkit-actions/.github/workflows/generator-integration.yml@v1
 #       with:
 #         setup-uv: true          # Python generators
 #         setup-go: true          # Go generators

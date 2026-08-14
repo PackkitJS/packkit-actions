@@ -15,7 +15,7 @@ name: dependency-freshness
 #       permissions:
 #         contents: read
 #         issues: write
-#       uses: PackkitJS/packkit-actions/.github/workflows/dependency-freshness.yml@v1
+#       uses: PackkitLabs/packkit-actions/.github/workflows/dependency-freshness.yml@v1
 on:
   workflow_call:
     inputs:

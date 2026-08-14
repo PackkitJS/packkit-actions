@@ -64,9 +64,9 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitJS/packkit-actions/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.2.0
-[1.1.2]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.2
-[1.1.1]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.1
-[1.1.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.1.0
-[1.0.0]: https://github.com/PackkitJS/packkit-actions/releases/tag/v1.0.0
+[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.2.0
+[1.1.2]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.1.2
+[1.1.1]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.1.1
+[1.1.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.1.0
+[1.0.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.0.0

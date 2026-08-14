@@ -10,7 +10,7 @@ name: security
 #       - cron: '0 6 * * 1'   # Mondays
 #   jobs:
 #     security:
-#       uses: PackkitJS/packkit-actions/.github/workflows/security.yml@v1
+#       uses: PackkitLabs/packkit-actions/.github/workflows/security.yml@v1
 on:
   workflow_call:
     inputs:

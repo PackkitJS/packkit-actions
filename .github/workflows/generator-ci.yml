@@ -5,7 +5,7 @@ name: generator-ci
 #
 #   jobs:
 #     ci:
-#       uses: PackkitJS/packkit-actions/.github/workflows/generator-ci.yml@v1
+#       uses: PackkitLabs/packkit-actions/.github/workflows/generator-ci.yml@v1
 #
 # It runs ONE language-agnostic entrypoint — `npm run check` — so this YAML never
 # encodes what "check" means for a given generator (that lives in each repo's
