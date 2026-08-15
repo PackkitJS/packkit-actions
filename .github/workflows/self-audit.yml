@@ -1,0 +1,20 @@
+name: Self stale-references audit
+
+# packkit-actions audits itself. It can't cleanly call its own reusable
+# `stale-references.yml@v1` (that would source the script from the released tag,
+# not this commit), so it runs the in-repo script directly — the same script the
+# reusable workflow sources for every other repo.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash scripts/stale-references.sh

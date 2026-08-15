@@ -1,14 +1,53 @@
-name: Stale references
+name: stale-references
+
+# Reusable org-wide audit for stale references left behind by the two renames:
+# `PackkitJS` -> `PackkitLabs` (org) and `create-packkit` -> `create-packkit-js`
+# (repo). GitHub keeps redirects for both, so stale links keep resolving and rot
+# silently instead of failing — the reference analog of the dependency-freshness
+# net. The org-wide patterns live ONCE in
+# `packkit-actions/scripts/stale-references.sh` (single source of truth); this
+# workflow sources that script and runs it against the caller's checked-out tree,
+# so no repo vendors a copy that can drift.
+#
+# Legitimate historical mentions (a CHANGELOG entry or a frozen migration doc that
+# names the old org/repo in past tense) are exempted per-repo by adding the file's
+# path as an ERE to a `.stale-refs-allow` file at the repo root.
+#
+# The caller needs no special permissions:
+#
+#   jobs:
+#     stale-references:
+#       uses: PackkitLabs/packkit-actions/.github/workflows/stale-references.yml@v1
 on:
-  push:
-    branches: [main]
-  pull_request:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      runs-on:
+        description: Runner image.
+        type: string
+        default: ubuntu-latest
+      script-ref:
+        description: packkit-actions ref to source the audit script from.
+        type: string
+        default: v1
+
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runs-on }}
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v7
-      - run: bash scripts/stale-references.sh
+      - name: Check out the calling repo
+        uses: actions/checkout@v7
+
+      # Source the canonical audit script. It lands in an untracked subdirectory,
+      # so `git grep` (which only scans the caller's tracked files) never sees it.
+      - name: Fetch the audit script
+        uses: actions/checkout@v7
+        with:
+          repository: PackkitLabs/packkit-actions
+          ref: ${{ inputs.script-ref }}
+          path: .packkit-audit
+          persist-credentials: false
+
+      - name: Audit stale references
+        run: bash .packkit-audit/scripts/stale-references.sh
