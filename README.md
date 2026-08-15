@@ -5,8 +5,8 @@ ecosystem — the single place CI/release logic lives, so `packkit-core`, the
 generators (`create-packkit-js`, `create-packkit-py`, …), and downstream packages
 don't each carry a copy.
 
-Part of the Packkit platform migration — see `create-packkit/docs/PLATFORM.md`,
-Phase 4.
+Part of the [Packkit platform](https://github.com/PackkitLabs) — see
+[`create-packkit-js/docs/PLATFORM.md`](https://github.com/PackkitLabs/create-packkit-js/blob/main/docs/PLATFORM.md).
 
 ## Design rules
 
