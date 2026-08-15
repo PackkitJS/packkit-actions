@@ -8,6 +8,15 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-08-15
+
+### Changed
+
+- `ecosystem-compatibility`: understand comparator ranges (`>=x <y`), so a consumer can
+  declare a core peer range spanning additive 0.x minors (e.g. `>=0.6.0 <1.0.0`) without
+  churning on every core bump.
+
+
 ## [1.5.0] - 2026-08-15
 
 ### Added
@@ -98,7 +107,8 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.5.1
 [1.5.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.5.0
 [1.4.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.4.0
 [1.3.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.3.0
