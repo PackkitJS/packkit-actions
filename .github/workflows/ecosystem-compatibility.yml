@@ -1,0 +1,42 @@
+name: ecosystem-compatibility
+
+# Reusable org-wide check that @packkit/core and its consumers stay version-consistent
+# at the SOURCE level (each repo's main-branch package.json). It reads compatibility.json
+# (the single source of truth for the intended core + which consumers may trail it) and
+# fails if a consumer requires a core NEWER than core's main — the drift bug a reviewer
+# would otherwise catch by hand — while tolerating the declared benign version split.
+#
+# A source-level companion to packkit-e2e's J6 (which checks the same at PUBLISHED
+# versions). Runs centrally against the whole org, so it needs no per-repo adoption:
+#
+#   jobs:
+#     ecosystem-compatibility:
+#       uses: PackkitLabs/packkit-actions/.github/workflows/ecosystem-compatibility.yml@v1
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        description: Runner image.
+        type: string
+        default: ubuntu-latest
+      script-ref:
+        description: packkit-actions ref to source the check + declaration from.
+        type: string
+        default: v1
+
+jobs:
+  compatibility:
+    runs-on: ${{ inputs.runs-on }}
+    permissions:
+      contents: read
+    steps:
+      - name: Fetch the check + declaration
+        uses: actions/checkout@v7
+        with:
+          repository: PackkitLabs/packkit-actions
+          ref: ${{ inputs.script-ref }}
+          persist-credentials: false
+      - name: Check ecosystem compatibility
+        env:
+          GH_TOKEN: ${{ github.token }} # gh api reads each repo's public package.json
+        run: node scripts/ecosystem-compatibility.mjs

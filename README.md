@@ -32,6 +32,7 @@ Part of the [Packkit platform](https://github.com/PackkitLabs) — see
 | `security.yml` | `pull_request` / `schedule` | `npm ci` → `npm audit --audit-level=<high>` |
 | `dependency-freshness.yml` | `schedule` / `workflow_dispatch` | `npm run check:freshness` → open/update/close a tracking issue |
 | `stale-references.yml` | `push` / `pull_request` / `schedule` | source `scripts/stale-references.sh` → fail on stale org/repo/Pages references |
+| `ecosystem-compatibility.yml` | `schedule` / `workflow_dispatch` | source `scripts/ecosystem-compatibility.mjs` → fail if a consumer's `@packkit/core` range drifts from core's main |
 
 Most invoke a single standard npm script, so the shared YAML stays
 language-agnostic:
@@ -134,6 +135,33 @@ the old org in past tense) by adding the file's path as an ERE, one per line, to
 # .stale-refs-allow — historical records; past org/repo names are correct here.
 (^|/)CHANGELOG\.md$
 (^|/)docs/history/
+```
+
+### Ecosystem-compatibility check
+
+`ecosystem-compatibility.yml` guards the version boundary the whole platform rides on:
+`@packkit/core` and its consumers. The ecosystem deliberately runs a **benign version
+split** — generators and surfaces pin an older core minor than the providers, because
+they only use additively-stable contract/protocol types — which *looks* like an
+inconsistency to a reviewer. This check encodes the intent in
+[`compatibility.json`](compatibility.json) (the single source of truth: the core repo,
+each consumer, and which consumers may trail core) and fails only on a **real** drift: a
+consumer requiring a core **newer** than core's own main branch (e.g. a provider on
+`^0.6.0` while core main still says `0.4.0`). It reads each repo's main-branch manifest,
+so it catches drift **before publish** — the source-level companion to
+[`packkit-e2e`](https://github.com/PackkitLabs/packkit-e2e)'s J6, which checks the same at
+published versions. Run it centrally (packkit-actions runs it weekly) or from any repo:
+
+```yaml
+# .github/workflows/compatibility.yml
+name: Ecosystem compatibility
+on:
+  schedule:
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+jobs:
+  compatibility:
+    uses: PackkitLabs/packkit-actions/.github/workflows/ecosystem-compatibility.yml@v1
 ```
 
 ## Versioning

@@ -8,6 +8,18 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-08-15
+
+### Added
+
+- `ecosystem-compatibility.yml` + `scripts/ecosystem-compatibility.mjs` +
+  `compatibility.json` — an org-wide check that `@packkit/core` and its consumers stay
+  version-consistent at the SOURCE level (each repo's main-branch `package.json`). Fails
+  on a real drift (a consumer requiring a core newer than core's main) while tolerating
+  the declared benign version split. Dependency-free (tiny inline caret-semver; reads
+  manifests via `gh api`). The source-level companion to packkit-e2e's J6. Runs centrally
+  (weekly in this repo) and is reusable via `workflow_call`.
+
 ## [1.4.0] - 2026-08-15
 
 ### Added
@@ -86,7 +98,8 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.5.0
 [1.4.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.4.0
 [1.3.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.3.0
 [1.2.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.2.0

@@ -1,0 +1,26 @@
+name: Self ecosystem-compatibility
+
+# packkit-actions runs the org-wide compatibility check centrally (it reads every repo's
+# main-branch manifest, so one job covers the whole ecosystem — no per-repo adoption).
+# Runs weekly, on any change to the check or its declaration, and on demand.
+on:
+  push:
+    branches: [main]
+    paths:
+      - compatibility.json
+      - scripts/ecosystem-compatibility.mjs
+  schedule:
+    - cron: '0 8 * * 1' # weekly, Monday 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check ecosystem compatibility
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/ecosystem-compatibility.mjs

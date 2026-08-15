@@ -1,0 +1,12 @@
+{
+  "//": "Single source of truth for @packkit/core compatibility across the ecosystem. scripts/ecosystem-compatibility.mjs reads each consumer's main-branch package.json and asserts its declared @packkit/core range is consistent with core's own main-branch version. The ecosystem deliberately runs a BENIGN VERSION SPLIT: generators + surfaces pin an older core minor than the providers, because they only use additively-stable contract/protocol types. `split: \"behind\"` marks a consumer that is INTENTIONALLY allowed to trail core; anything not so marked must track the current core. A consumer requiring a core NEWER than core's main is always a hard failure (the real drift bug).",
+  "core": { "package": "@packkit/core", "repo": "packkit-core" },
+  "consumers": [
+    { "repo": "create-packkit-js", "field": "dependencies", "split": "behind", "why": "uses only additively-stable contract/protocol types; not composeFullstack/provider APIs" },
+    { "repo": "create-packkit-py", "field": "dependencies", "split": "behind", "why": "same as create-packkit-js" },
+    { "repo": "create-packkit-go", "field": "dependencies", "split": "behind", "why": "same as create-packkit-js" },
+    { "repo": "packkit-mcp", "field": "dependencies", "split": "behind", "why": "pins the minor that introduced composeFullstack; additive" },
+    { "repo": "provider-netlify", "field": "peerDependencies" },
+    { "repo": "provider-aws", "field": "peerDependencies" }
+  ]
+}
