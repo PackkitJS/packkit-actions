@@ -50,10 +50,22 @@ const rangeMin = (range) => {
 };
 function satisfies(version, range) {
 	const v = parse(version);
-	const min = rangeMin(range);
-	if (!v || !min) return null;
-	if (String(range).startsWith('^')) return cmp(v, min) >= 0 && cmp(v, caretUpper(min)) < 0;
-	return cmp(v, min) === 0; // exact
+	if (!v) return null;
+	const r = String(range).trim();
+	if (r.startsWith('^')) {
+		const min = rangeMin(r);
+		return min ? cmp(v, min) >= 0 && cmp(v, caretUpper(min)) < 0 : null;
+	}
+	// Comparator range, e.g. ">=0.6.0 <1.0.0" — accept any core spanning additive minors.
+	const ge = r.match(/>=\s*(\d+\.\d+\.\d+)/);
+	const lt = r.match(/<\s*(\d+\.\d+\.\d+)/);
+	if (ge || lt) {
+		if (ge && cmp(v, parse(ge[1])) < 0) return false;
+		if (lt && cmp(v, parse(lt[1])) >= 0) return false;
+		return true;
+	}
+	const min = rangeMin(r);
+	return min ? cmp(v, min) === 0 : null; // exact
 }
 
 let core, coreVersion;
