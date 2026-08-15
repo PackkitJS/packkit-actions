@@ -6,7 +6,7 @@ generators (`create-packkit-js`, `create-packkit-py`, …), and downstream packa
 don't each carry a copy.
 
 Part of the [Packkit platform](https://github.com/PackkitLabs) — see
-[`create-packkit-js/docs/PLATFORM.md`](https://github.com/PackkitLabs/create-packkit-js/blob/main/docs/PLATFORM.md).
+[`create-packkit-js/docs/ARCHITECTURE.md`](https://github.com/PackkitLabs/create-packkit-js/blob/main/docs/ARCHITECTURE.md).
 
 ## Design rules
 
