@@ -8,6 +8,28 @@ breaking changes to a workflow's inputs or contract move the major.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-08-15
+
+### Added
+
+- `stale-references.yml` — reusable org-wide audit that fails a run when stale
+  references survive the `PackkitJS` → `PackkitLabs` and
+  `create-packkit` → `create-packkit-js` renames (GitHub's redirects otherwise hide
+  the rot). Sources the canonical `scripts/stale-references.sh` (single source of
+  truth for the patterns) and runs it against the caller's tracked files;
+  legitimate historical mentions are exempted per-repo via `.stale-refs-allow`.
+  Inputs: `runs-on`, `script-ref`. No special permissions required.
+- `scripts/stale-references.sh` — the audit script itself, runnable locally
+  (`bash scripts/stale-references.sh` from any repo).
+
+## [1.3.0] - 2026-08-13
+
+### Added
+
+- `generator-integration.yml`: `setup-go` input (SHA-pinned `actions/setup-go`) so
+  a JS generator that emits Go projects can build/vet/test the scaffolded output in
+  CI, alongside the existing Node-always / `setup-uv` opt-in matrix.
+
 ## [1.2.0] - 2026-08-12
 
 ### Added
@@ -64,7 +86,9 @@ Initial release — Phase 4 of the Packkit platform migration (see
   language-agnostic. Inputs: `node-version` (default `24`), `runs-on`
   (default `ubuntu-latest`).
 
-[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/PackkitLabs/packkit-actions/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.4.0
+[1.3.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.3.0
 [1.2.0]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.2.0
 [1.1.2]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.1.2
 [1.1.1]: https://github.com/PackkitLabs/packkit-actions/releases/tag/v1.1.1

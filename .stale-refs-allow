@@ -1,0 +1,7 @@
+# .stale-refs-allow — file paths (ERE) exempt from the stale-reference audit.
+# This repo DOCUMENTS the stale patterns (it's the audit's home), so its own
+# README/CHANGELOG necessarily contain them; the audit script + workflow are
+# already self-exempt by name.
+(^|/)README\.md$
+(^|/)CHANGELOG\.md$
+(^|/)docs/history/

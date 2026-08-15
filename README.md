@@ -31,8 +31,9 @@ Part of the [Packkit platform](https://github.com/PackkitLabs) — see
 | `generator-integration.yml` | `push` / `pull_request` / `schedule` | provisions runtimes (Node always; uv opt-in) → `npm run test:integration` |
 | `security.yml` | `pull_request` / `schedule` | `npm ci` → `npm audit --audit-level=<high>` |
 | `dependency-freshness.yml` | `schedule` / `workflow_dispatch` | `npm run check:freshness` → open/update/close a tracking issue |
+| `stale-references.yml` | `push` / `pull_request` / `schedule` | source `scripts/stale-references.sh` → fail on stale org/repo/Pages references |
 
-Each invokes a single standard npm script, so the shared YAML stays
+Most invoke a single standard npm script, so the shared YAML stays
 language-agnostic:
 
 | Script | Meaning |
@@ -97,6 +98,42 @@ jobs:
       contents: read
       issues: write
     uses: PackkitLabs/packkit-actions/.github/workflows/dependency-freshness.yml@v1
+```
+
+```yaml
+# .github/workflows/stale-references.yml in any ecosystem repo
+name: Stale references
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  stale-references:
+    uses: PackkitLabs/packkit-actions/.github/workflows/stale-references.yml@v1
+```
+
+### Stale-reference audit
+
+`stale-references.yml` guards against the slow rot GitHub's rename redirects hide:
+after `PackkitJS` → `PackkitLabs` and `create-packkit` → `create-packkit-js`, old
+links keep resolving, so nothing fails when a doc, badge, or emitted `$schema` URL
+still names the old org/repo. The audit greps every tracked file for the stale
+spellings (the org-qualified `PackkitLabs/create-packkit` repo path, the
+`packkitjs.github.io` and `…github.io/create-packkit` Pages paths, and the bare
+`PackkitJS` org name) and fails the run if any survive. The unqualified npm/CLI
+name `create-packkit` is deliberately **not** flagged.
+
+Patterns live once in [`scripts/stale-references.sh`](scripts/stale-references.sh)
+— run it locally too (`bash scripts/stale-references.sh` from any repo). Exempt a
+legitimate historical mention (a CHANGELOG entry or a frozen migration doc naming
+the old org in past tense) by adding the file's path as an ERE, one per line, to a
+`.stale-refs-allow` file at the repo root:
+
+```text
+# .stale-refs-allow — historical records; past org/repo names are correct here.
+(^|/)CHANGELOG\.md$
+(^|/)docs/history/
 ```
 
 ## Versioning
